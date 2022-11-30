@@ -1,7 +1,8 @@
-const call = require ('../Contact 28-11-2022/app')//import
-const yargs = require("yargs")
+const call = require ('./app')//import
+const yargs = require("yargs");
+const { describe } = require('yargs');
 
-yargs.command({
+yargs.command({ //command untuk menambah data
     command:'add',
     describe:'add new contact',
     builder:{
@@ -31,5 +32,29 @@ yargs.command({
         call.savedata(argv.name,argv.email,argv.mobile);//memanggil function
     },
 });
+
+yargs.command({ //command untuk menampilkan isi contacts.json
+    command:'show',
+    describe:'menampilkan isi contacts.json',
+    handler(){
+        call.showdata();
+    },
+});
+
+yargs.command({ //command untuk mencari data berdasarkan nama
+    command:'find',
+    describe:'cari data dari nama',
+    handler(argv){
+        call.findName(argv.name)
+    }
+})
+
+yargs.command({ //comman untuk menhapus data
+    command:'delete',
+    describe:'menghapus data',
+    handler(argv){
+        call.filter(argv.name);
+    }
+})
 
 yargs.parse();
