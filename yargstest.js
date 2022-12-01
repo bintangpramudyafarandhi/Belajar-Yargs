@@ -1,6 +1,6 @@
 const call = require ('./app')//import
 const yargs = require("yargs");
-const { describe } = require('yargs');
+const { describe, demandOption } = require('yargs');
 
 yargs.command({ //command untuk menambah data
     command:'add',
@@ -28,7 +28,6 @@ yargs.command({ //command untuk menambah data
             email:argv.email,
             mobile:argv.mobile,
         };
-        console.log(contact);
         call.savedata(argv.name,argv.email,argv.mobile);//memanggil function
     },
 });
@@ -49,11 +48,41 @@ yargs.command({ //command untuk mencari data berdasarkan nama
     }
 })
 
-yargs.command({ //comman untuk menhapus data
+yargs.command({ //command untuk menhapus data
     command:'delete',
     describe:'menghapus data',
     handler(argv){
         call.filter(argv.name);
+    }
+})
+
+yargs.command({
+    command:'update',
+    describe:'mengupdate konten data',
+    builder: {
+        name: {
+            describe: 'nama contact',
+            demandOption: false,
+            type: 'string',
+        },
+        email: {
+            describe: 'email contact',
+            demandOption: false,
+            type: 'string',
+        },
+        mobile: {
+            describe: 'no.hp contact',
+            demandOption: false,
+            type: 'string'
+        },
+        where: {
+            describe: 'condition value',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        call.update(argv.name, argv.email, argv.mobile, argv.where)
     }
 })
 
